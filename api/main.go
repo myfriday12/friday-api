@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	log.Println("Friday API")
 	friday.AppConfigPath = "../friday/config"
 
 	checkEnvironmentVariables()

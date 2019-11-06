@@ -72,6 +72,16 @@ func GetAdPricing(region string, category string, query string) (PriceBuckets, e
 			return buckets, errJSON
 		}
 
+		if chototAdResp.Total == 1 {
+			var pbSingle PriceBucket
+			pbSingle.From = chototAdResp.Ads[0].Price
+			pbSingle.To = chototAdResp.Ads[0].Price
+			pbSingle.Quantity = 1
+			buckets.Prices = append(buckets.Prices, pbSingle)
+			buckets.PriceList = append(buckets.PriceList, chototAdResp.Ads[0].Price)
+			return buckets, nil
+		}
+
 		sort.Slice(chototAdResp.Ads, func(i, j int) bool {
 			return chototAdResp.Ads[i].Price < chototAdResp.Ads[j].Price
 		})

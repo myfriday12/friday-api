@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"sort"
 )
@@ -16,21 +17,21 @@ func GetAdPricing(region string, category string, query string) (PriceBuckets, e
 	var buckets PriceBuckets
 	var chototAdResp ChototAds
 
-	url, hasValue := os.LookupEnv("CHOTOT_SEARCH")
+	capi, hasValue := os.LookupEnv("CHOTOT_SEARCH")
 
 	if hasValue == false {
 		log.Println("Error reading ENV for CHOTOT_SEARCH")
 		return buckets, errors.New("Cannot read ENV")
 	}
 
-	url = url + "&region_v2=" + region + "&cg=" + category
+	capi = capi + "&region_v2=" + region + "&cg=" + category
 	if query != "" {
-		url = url + "&q=" + query
+		capi = capi + "&q=" + url.QueryEscape(query)
 	}
 
-	log.Println("URL: " + url)
+	log.Println("capi: " + capi)
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", capi, nil)
 	if err != nil {
 		return buckets, err
 	}

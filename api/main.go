@@ -33,7 +33,7 @@ func main() {
 	router.Use(gin.Recovery())
 
 	router.Use(func(context *gin.Context) {
-		context.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		// context.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		context.Writer.Header().Add("Access-Control-Max-Age", "300")
 		context.Writer.Header().Add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
 		context.Writer.Header().Add("Access-Control-Allow-Headers", "Authorization,Content-Type,Accept,tpa,ses")

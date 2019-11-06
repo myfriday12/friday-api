@@ -35,8 +35,10 @@ func GetAdPricing(region string, category string, query string) (PriceBuckets, e
 		return buckets, err
 	}
 
+	host, _ := os.LookupEnv("FRIDAY_HOST")
+
 	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Host", "gateway.chotot.com")
+	req.Header.Add("Host", host)
 	req.Header.Add("Cache-Control", "no-cache")
 	req.Header.Add("accept-encoding", "gzip, deflate")
 	req.Header.Add("Connection", "keep-alive")

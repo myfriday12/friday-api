@@ -15,6 +15,8 @@ func main() {
 	log.Println("Friday API")
 	friday.AppConfigPath = "../friday/config"
 
+	checkEnvironmentVariables()
+
 	router := gin.New()
 	router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 		return fmt.Sprintf("[FridayAPI] - [%s] | %s | %s | %s | %d | %s | %s | %s |\n",
@@ -49,4 +51,21 @@ func main() {
 	}
 
 	router.Run(":" + port)
+}
+
+// checkEnvironmentVariables - Ensure that the required environment variable are defined
+func checkEnvironmentVariables() {
+	m := map[string]string{
+		"CHOTOT_SEARCH": "CHOTOT_SEARCH API URL not found! X_x",
+		"FRIDAY_PORT":   "FRIDAY_PORT Not Found! T_T",
+		"FRIDAY_HOST":   "Oops, FRIDAY_HOST not found? O_o"}
+
+	for k, v := range m {
+		ev, hasValue := os.LookupEnv(k)
+		if hasValue == false {
+			log.Fatal(v)
+		} else {
+			log.Println(k, " : ", ev)
+		}
+	}
 }

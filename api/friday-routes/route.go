@@ -13,6 +13,7 @@ func MountRoute(router *gin.RouterGroup) {
 	router.GET("/rate/up", rateAdUp)
 	router.GET("/rate/down", rateAdDown)
 	router.GET("/rate/rating", getAdRating)
+	router.GET("/similar", getSimilar)
 
 	router.OPTIONS("/*any", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "Goosfraba"})
@@ -42,4 +43,11 @@ func rateAdDown(c *gin.Context) {
 func getAdRating(c *gin.Context) {
 	listID := c.Query("list_id")
 	c.JSON(handlegetAdRating(listID))
+}
+
+func getSimilar(c *gin.Context) {
+	price := c.Query("price")
+	category := c.Query("cg")
+	query := c.Query("q")
+	c.JSON(handleGetSimilarAds(category, price, query))
 }

@@ -1,6 +1,7 @@
 package fridayroutes
 
 import (
+	"fmt"
 	fridayf "friday-api/friday"
 	"net/http"
 )
@@ -21,6 +22,29 @@ func handleGerPricing(region string, category string, query string) (int, interf
 	}
 
 	return http.StatusOK, buckets
+}
+
+func handleGetSimilarAds(category string, price string, query string) (int, interface{}) {
+	if category == "" {
+		return http.StatusUnprocessableEntity, "(HGSAC) Missing category"
+	}
+
+	if price == "" {
+		return http.StatusUnprocessableEntity, "(HGSAP) Missing price"
+	}
+
+	if query == "" {
+		return http.StatusUnprocessableEntity, "(HGSAQ) Missing query"
+	}
+
+	fmt.Println("Calling similar ads")
+	similarAds, err := fridayf.GetSimilarAds(category, price, query)
+
+	if err != nil {
+		return JsonapiErrorResp(http.StatusNotAcceptable, err.Error())
+	}
+
+	return http.StatusOK, similarAds
 }
 
 //handleRateAdUp - This function will rate a specific ad up
